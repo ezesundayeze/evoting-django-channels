@@ -3,10 +3,11 @@ var info = document.getElementById("info");
 
 const form = document.getElementById("vote_form");
 
-form.addEventListener("click", function(e) {
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
   $.ajax({
     type: "post",
-    url: "home",
+    url: "home/",
     data: {
       party: party.value,
       csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
@@ -16,6 +17,19 @@ form.addEventListener("click", function(e) {
     },
     success: function() {
       info.innerText = "Congratulations, you've voted successfully! Cheers.";
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  const webSocketBridge = new ChannelSplitterNode.WebSocketBridge();
+  const nl = document.querySelector("#votes");
+  webSocketBridge.connect("/home/");
+  webSocketBridge.listen(function(action, stream) {
+    console.log("Response:", action);
+    if (action.event === "new vote") {
+      const li = document.createElement("li");
+      li.innerHTML = `new vote from ${action.name}`;
     }
   });
 });

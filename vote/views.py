@@ -1,8 +1,12 @@
 from django.shortcuts import render
+from .models import Party, User, Vote
 
 
 def index(request):
-    context = {}
-    return render(request, "template_name", context)
+    parties = Party.objects.all()
+    print(request)
+
+    context = {"parties": parties}
+    return render(request, "votes/index.html", context)
 
 # Create your views here.
