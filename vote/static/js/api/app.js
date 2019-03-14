@@ -7,7 +7,7 @@ form.addEventListener("submit", function(e) {
   e.preventDefault();
   $.ajax({
     type: "post",
-    url: "home/",
+    url: "home",
     data: {
       party: party.value,
       csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
